@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import LessonTemplate from '@/components/lesson-template'
 import { Card } from '@/components/ui/card'
@@ -88,8 +88,13 @@ const moduleContent: Record<string, any> = {
 }
 
 export default function ModulePage() {
+  const [moduleId, setModuleId] = useState<string | null>(null)
+
+useEffect(() => {
   const params = useParams()
-  const moduleId = params.moduleId as string
+  setModuleId(params.moduleId as string)
+}, [])
+
   const [selectedLesson, setSelectedLesson] = useState(0)
   const module = moduleContent[moduleId]
 
@@ -127,7 +132,7 @@ export default function ModulePage() {
         <div className="lg:col-span-3">
           <LessonTemplate
             title={currentLesson.title}
-            moduleId={params.moduleId}
+            moduleId={moduleId}
             sections={{
               intuition: currentLesson.intro,
               latex: 'Formula',
